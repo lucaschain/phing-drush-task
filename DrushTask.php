@@ -60,6 +60,7 @@ class DrushTask extends Task {
    */
   private $command = array();
   private $bin = NULL;
+  private $remote = NULL;
   private $uri = NULL;
   private $root = NULL;
   private $assume = NULL;
@@ -78,6 +79,14 @@ class DrushTask extends Task {
   public function setCommand($str) {
     $this->command = $str;
   }
+
+  /**
+   * The remote server on acquia
+   */
+  public function setRemote($str){
+    $this->remote = $str;
+  }
+
 
   /**
    * Path the Drush executable.
@@ -211,6 +220,11 @@ class DrushTask extends Task {
     $option = new DrushOption();
     $option->setName('nocolor');
     $this->options[] = $option;
+
+    //Inject remote repo
+    if (!empty($this->remote)) {
+      $command[] = "@".$this->remote;
+    }
 
     if (!empty($this->root)) {
       $option = new DrushOption();
